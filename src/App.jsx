@@ -144,8 +144,8 @@ function Hero() {
             <a className="btn btn-primary" href="#projects">
               view projects →
             </a>
-            <a className="btn btn-ghost" href="#contact">
-              get in touch
+            <a className="btn btn-ghost" href="/public/mohit_saini_resume.pdf" download>
+              Resume / CV
             </a>
           </div>
         </div>
