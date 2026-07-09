@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { profile, projects, skills, education } from "./data.js"
+import CustomCursor from "./components/CustomCursor.jsx"
 
 /* ---------- scroll reveal hook ---------- */
 function useReveal() {
@@ -49,6 +50,7 @@ function Nav() {
   function toggleTheme() {
     setTheme((t) => (t === "dark" ? "light" : "dark"))
   }
+
 
   return (
     <header className="nav">
@@ -396,6 +398,7 @@ function Footer() {
 export default function App() {
   return (
     <>
+    <CustomCursor/>
       <Nav />
       <Hero />
       <About />
