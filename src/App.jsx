@@ -61,7 +61,7 @@ function Nav() {
           <nav className="nav-links">
             {links.map((l) => (
               <a key={l} href={`#${l}`}>
-                /{l}
+                {l}
               </a>
             ))}
           </nav>
@@ -225,13 +225,17 @@ function Projects() {
                 className="project-card"
                 download={p.link.endsWith(".apk") ? true : undefined}
               >
+                <img src={p.image} alt="" className="project-bg-img" />
                 <div className="project-head">
                   <span className={`method method-${p.method}`}>{p.method}</span>
                   <span className="project-head-path">{p.path}</span>
                   <span className="status-ok">↗</span>
                 </div>
                 <div className="project-body">
-                  <h3>{p.title}</h3>
+                  <div className="project-header">
+                    <img src={p.logo} alt={`${p.title} logo`} className="project-logo" />
+                    <h3>{p.title}</h3>
+                  </div>
                   <div className="project-role">{p.role}</div>
                   <p className="project-desc">{p.description}</p>
                   <ul className="project-points">
@@ -269,7 +273,7 @@ function Skills() {
           {skills.map((block, i) => (
             <Reveal key={block.category} dir={i % 2 === 0 ? "right" : "left"}>
               <div className="skill-block">
-                <div className="skill-comment">// {block.category}</div>
+                <div className="skill-comment">{block.category}</div>
                 <div className="skill-items">
                   {block.items.map((it) => (
                     <span className="skill-pill" key={it}>

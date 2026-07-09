@@ -1,3 +1,6 @@
+import xoraLogo from "../src/public/xora.png";
+import MIT from "../src/public/mitwhite.png";
+
 export const profile = {
   name: "Mohit Saini",
   role: "Full Stack Developer",
@@ -17,6 +20,8 @@ export const projects = [
     path: "/malhotra-it",
     link: "https://malhotrait.in/",
     status: 200,
+    image: MIT,
+    logo: MIT,
     title: "Malhotra IT Innovation",
     role: "Frontend UI Developer",
     description:
@@ -31,8 +36,10 @@ export const projects = [
   {
     method: "GET",
     path: "/XORA",
+    logo: xoraLogo,
     link: "/public/xora.apk",
     status: 200,
+    image: xoraLogo,
     title: "XORA App",
     role: "Frontend UI Developer",
     description:
