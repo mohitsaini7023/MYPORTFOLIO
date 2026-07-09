@@ -22,10 +22,11 @@ function useReveal() {
   return ref
 }
 
-function Reveal({ children, className = "" }) {
+function Reveal({ children, className = "", dir = "up" }) {
   const ref = useReveal()
+  const dirClass = dir === "left" ? "dir-left" : dir === "right" ? "dir-right" : ""
   return (
-    <div ref={ref} className={`reveal ${className}`}>
+    <div ref={ref} className={`reveal ${dirClass} ${className}`}>
       {children}
     </div>
   )
@@ -34,7 +35,21 @@ function Reveal({ children, className = "" }) {
 /* ---------- nav ---------- */
 function Nav() {
   const [open, setOpen] = useState(false)
+  const [theme, setTheme] = useState(() => {
+    if (typeof window === "undefined") return "dark"
+    return localStorage.getItem("theme") || "dark"
+  })
   const links = ["about", "projects", "skills", "education", "contact"]
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme)
+    localStorage.setItem("theme", theme)
+  }, [theme])
+
+  function toggleTheme() {
+    setTheme((t) => (t === "dark" ? "light" : "dark"))
+  }
+
   return (
     <header className="nav">
       <div className="nav-inner">
@@ -42,21 +57,30 @@ function Nav() {
           <span className="nav-dot" />
           mohitsaini.dev
         </span>
-        <nav className="nav-links">
-          {links.map((l) => (
-            <a key={l} href={`#${l}`}>
-              /{l}
-            </a>
-          ))}
-        </nav>
-        <button
-          className="nav-toggle"
-          aria-label="Toggle menu"
-          aria-expanded={open}
-          onClick={() => setOpen((o) => !o)}
-        >
-          {open ? "✕" : "☰"}
-        </button>
+        <div className="nav-right">
+          <nav className="nav-links">
+            {links.map((l) => (
+              <a key={l} href={`#${l}`}>
+                /{l}
+              </a>
+            ))}
+          </nav>
+          <button
+            className="theme-toggle"
+            onClick={toggleTheme}
+            aria-label="Toggle light/dark theme"
+          >
+            {theme === "dark" ? "☀" : "🌙"}
+          </button>
+          <button
+            className="nav-toggle"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? "✕" : "☰"}
+          </button>
+        </div>
       </div>
       {open && (
         <div className="nav-mobile">
@@ -136,22 +160,25 @@ function About() {
   return (
     <section id="about">
       <div className="wrap">
-        <Reveal>
+        <Reveal dir="left">
           <p className="eyebrow">about</p>
           <div className="about-grid">
             <div className="about-text">
               <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)", marginBottom: 16 }}>
-                Building interfaces backed by real, working systems.
+                I build the engine, then design the dashboard for it.
               </h2>
               <p>
-                I'm a full stack developer based in Rajasthan, focused on the MERN stack. I like
-                projects where the frontend and backend are both mine to reason about — designing
-                the API, then building the interface that makes it feel simple.
+                I'm a full stack developer from Rajasthan who thinks in both directions — the
+                database schema and the pixel on screen. Most of my work starts with a real
+                problem: track attendance, manage a school's dues, run payroll — then I design
+                the API around it and build an interface that makes the whole thing feel
+                effortless to use.
               </p>
               <p>
-                Currently pursuing a BCA at Manipal University Jaipur while shipping real
-                projects: admin dashboards, authentication systems and management tools for small
-                institutions and businesses.
+                I'm currently sharpening that foundation with a BCA at Manipal University Jaipur,
+                while shipping production-style projects on the side — admin dashboards,
+                authentication systems and management tools built for people who actually use
+                them every day, not just for a portfolio.
               </p>
             </div>
             <div className="facts">
@@ -184,18 +211,19 @@ function Projects() {
   return (
     <section id="projects">
       <div className="wrap">
-        <Reveal>
+        <Reveal dir="right">
           <p className="eyebrow">projects</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)" }}>Things I've shipped</h2>
         </Reveal>
         <div className="projects-list">
-          {projects.map((p) => (
-            <Reveal key={p.path}>
+          {projects.map((p, i) => (
+            <Reveal key={p.path} dir={i % 2 === 0 ? "left" : "right"}>
               <a
                 href={p.link}
                 target="_blank"
                 rel="noreferrer"
                 className="project-card"
+                download={p.link.endsWith(".apk") ? true : undefined}
               >
                 <div className="project-head">
                   <span className={`method method-${p.method}`}>{p.method}</span>
@@ -233,13 +261,13 @@ function Skills() {
   return (
     <section id="skills">
       <div className="wrap">
-        <Reveal>
+        <Reveal dir="left">
           <p className="eyebrow">skills</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)" }}>Toolbox</h2>
         </Reveal>
         <div className="skills-grid">
-          {skills.map((block) => (
-            <Reveal key={block.category}>
+          {skills.map((block, i) => (
+            <Reveal key={block.category} dir={i % 2 === 0 ? "right" : "left"}>
               <div className="skill-block">
                 <div className="skill-comment">// {block.category}</div>
                 <div className="skill-items">
@@ -263,16 +291,16 @@ function Education() {
   return (
     <section id="education">
       <div className="wrap">
-        <Reveal>
+        <Reveal dir="right">
           <p className="eyebrow">education</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)" }}>Commit history</h2>
         </Reveal>
         <div className="timeline">
-          {education.map((e) => (
-            <Reveal key={e.hash}>
+          {education.map((e, i) => (
+            <Reveal key={e.hash} dir={i % 2 === 0 ? "left" : "right"}>
               <div className="commit">
                 <div className="commit-meta">
-                  <span className="commit-hash">#{e.hash}</span>
+                  {/* <span className="commit-hash">#{e.hash}</span> */}
                   <span>{e.date}</span>
                   <span>{e.status === "in-progress" ? "◐ in progress" : "✓ merged"}</span>
                 </div>
@@ -310,7 +338,7 @@ function Contact() {
   return (
     <section id="contact">
       <div className="wrap">
-        <Reveal>
+        <Reveal dir="left">
           <p className="eyebrow">contact</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)" }}>Let's build something</h2>
           <div className="contact-panel">

@@ -28,6 +28,22 @@ export const projects = [
     ],
     stack: ["HTML5", "CSS3", "Bootstrap", "React.js"],
   },
+  {
+    method: "GET",
+    path: "/XORA",
+    link: "/public/xora.apk",
+    status: 200,
+    title: "XORA App",
+    role: "Frontend UI Developer",
+    description:
+      "A responsive marketing site for an IT institute — courses and placements, tuned for speed on any device.",
+    points: [
+      "Engineered a responsive platform to showcase courses and placements",
+      "Built dynamic, interactive layouts with Bootstrap for fluid cross-device viewports",
+      "Optimized navigation and assets for fast loading and a modern flow",
+    ],
+    stack: ["React Native", "Erlang", "MySQL", "Firebase Cloud Messaging","JWT","Cloud Storage"],
+  },
 ]
 
 export const skills = [
